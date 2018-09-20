@@ -7,6 +7,7 @@ import './AdminUpgradeabilityProxy.sol';
  * @dev Factory to create upgradeability proxies.
  */
 contract UpgradeabilityProxyFactory {
+    AdminUpgradeabilityProxy public g_proxy;
   /**
    * @dev Emitted when a new proxy is created.
    * @param proxy Address of the created proxy.
@@ -22,6 +23,7 @@ contract UpgradeabilityProxyFactory {
   function createProxy(address admin, address implementation) public returns (AdminUpgradeabilityProxy) {
     AdminUpgradeabilityProxy proxy = _createProxy(implementation);
     proxy.changeAdmin(admin);
+    g_proxy = proxy;
     return proxy;
   }
 
@@ -40,6 +42,7 @@ contract UpgradeabilityProxyFactory {
     AdminUpgradeabilityProxy proxy = _createProxy(implementation);
     proxy.changeAdmin(admin);
     require(address(proxy).call.value(msg.value)(data));
+    g_proxy = proxy;
     return proxy;
   }
 
